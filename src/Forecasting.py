@@ -5,6 +5,7 @@
 
 # ///LIBRAIRIES///
 
+import os
 import pandas as pd 
 import numpy as np
 import statsmodels.tsa.statespace.sarimax as sarimax
@@ -17,8 +18,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # ///USER INPUTS///
-d = '99-1' #Enter the point where the prediction has to be made. Make sure it is in 'str' format
-m = 0 # m = 0,1,2,3 for BX,Verre,OM,Carton respectively
+d = '191' #Enter the point where the prediction has to be made. Make sure it is in 'str' format
+m = 1 # m = 0,1,2,3 for BX,Verre,OM,Carton respectively
 
 # ///OTHER VARIABLES///
 p = 'BX'
@@ -26,7 +27,8 @@ q = 'Verre'
 r = "OM"
 s = "Carton"
 c = []
-loc = "Data cleared.xlsx"  # Location where the cleaned data is present
+loc = "input/Data_cleared.xlsx"  # Location where the cleaned data is present
+loc = os.path.abspath(loc)
 # ///FUNCTIONS///
 
 def SelectPoints(point, m):
@@ -54,12 +56,6 @@ def SelectPoints(point, m):
         for i in range(10):
             c.append(s)
     return df
-
-#n = 0,1,2,3 for BX,Verre,OM,Carton respectively
-#Select the point to be forecasted and the type of waste. 
-df = SelectPoints(d,m)  
-df['days before last pick up'] = df['days before last pick up'].apply(pd.to_numeric, errors='coerce')
-n = round(df['days before last pick up'].mean())
 
 #Spliting the data to evaluate the models using MSE(Mean Squared error)
 def test_train_split(df):
@@ -315,4 +311,9 @@ def prediction(df):  # Evaluates the dataset on different models and returns the
         print('min_mse =',min_mse)
         print(sarimaModel(df))
 
+#m = 0,1,2,3 for BX,Verre,OM,Carton respectively
+#Select the point to be forecasted and the type of waste. 
+df = SelectPoints(d,m)  
+df['days before last pick up'] = df['days before last pick up'].apply(pd.to_numeric, errors='coerce')
+n = round(df['days before last pick up'].mean())
 prediction(df)

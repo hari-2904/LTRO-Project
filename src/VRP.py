@@ -2,10 +2,9 @@ from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 import pandas as pd
 import numpy as np
+import os
 
 #Enter the list of locations where VRP needs to be implemented
-
-
 loc = [[249, 25, 255, 30, 32, 231], [0, 168, 207, 159, 167, 183, 76, 73, 214], [8, 55, 19, 161, 272, 163, 21, 23, 13, 16], [102, 123, 124, 131, 113, 143, 144, 108, 132, 110, 87, 112, 97, 243, 241, 238]]#user input
 global b
 b = []
@@ -13,7 +12,9 @@ b = []
 def distMat(loc):
     loc1 = loc.copy()
     loc1 = np.insert(loc,0,328) # depot location
-    df = pd.read_excel("Distances.xlsx", sheet_name=2, header=None)
+    dist_mat = "input/Distances.xlsx"
+    dist_mat = os.path.abspath(dist_mat)
+    df = pd.read_excel(dist_mat, sheet_name=2, header=None)
     df = df.loc[loc1,loc1] # to extract distance matrix for specific locations alone
     m = df.to_numpy() # to create a numpy array for distance matrix
     return m
@@ -28,7 +29,7 @@ def create_data_model(dmat):
 
 def print_solution(manager, routing, solution):
     """Prints solution on console."""
-    ###print('Objective: {} metres'.format(solution.ObjectiveValue()))
+    print('Objective: {} metres'.format(solution.ObjectiveValue()))
     index = routing.Start(0)
     plan_output = '\n'
     route_distance = 0

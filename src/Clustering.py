@@ -8,13 +8,16 @@ from sklearn.cluster import KMeans
 from yellowbrick.cluster import KElbowVisualizer
 import pandas as pd
 import numpy as np
+import os
 
 # ///USER INPUTS///
 date = '2022-07-19' #Date on which the clustering need to be done
 m = 0 # Input type of waste - 0,1,2,3 for BX,Verre,OM,Carton respectively
 
 # ///OTHER VARIABLES///
-dist = pd.read_excel("Distances.xlsx", sheet_name=1)
+dist_mat = "input/Distances.xlsx"
+dist_mat = os.path.abspath(dist_mat)
+dist = pd.read_excel(dist_mat, sheet_name=1)
 
 # ///FUNCTIONS///
 
@@ -29,7 +32,9 @@ def clean_column(value):  #To clean the column to get int datatype
 
 def Selectpoints(date):   #Selects datapoints from the predicted data for a single date
     date = date
-    df = pd.read_excel("Predictions.xlsx", sheet_name = m )
+    pred_loc = "input/Predictions.xlsx"
+    pred_loc = os.path.abspath(pred_loc)
+    df = pd.read_excel(pred_loc, sheet_name = m )
     df['date']=pd.to_datetime(df['date'])
     df['n_point'] = df['n_point'].astype(str)
     df['day'] = [i.day for i in df['date']]
