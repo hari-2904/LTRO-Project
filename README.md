@@ -19,3 +19,6 @@ Clustering.py - To cluster the predicted fill rate of points based on the predic
 VRP.py - To solve the VRP of the cluster obtained from above script
 
 'Results' folder contains Predictions obtained by running 'Multiple Forecast.ipynb' file
+
+# Note
+It can be improved a lot because I have used only AR models and k-Means clustering. I will add other prediction models whenever I get the chance. 
